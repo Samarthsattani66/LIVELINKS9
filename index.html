@@ -10,8 +10,8 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: black;
-      color: white;
+      background-color: #003a8c; /* Mumbai Indians blue */
+      color: #ffd700; /* Mumbai Indians gold */
     }
 
     .jwplayer {
@@ -26,7 +26,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 58, 140, 0.9); /* Blue overlay with transparency */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -34,8 +34,8 @@
     }
 
     .popup-content {
-      background-color: #222;
-      color: white;
+      background-color: #ffd700; /* Gold background */
+      color: #003a8c; /* Blue text */
       padding: 20px;
       text-align: center;
       border-radius: 10px;
@@ -45,7 +45,7 @@
 
     .popup-content h2 {
       margin: 0 0 10px;
-      color: #00aaff;
+      color: #003a8c; /* Blue heading */
     }
 
     .popup-content p {
@@ -63,15 +63,16 @@
     }
 
     .popup-content .join-btn {
-      background-color: #008fd6;
-      color: white;
+      background-color: #003a8c; /* Blue button */
+      color: #ffd700; /* Gold text */
     }
 
     .popup-content .close-btn {
-      background-color: #555;
+      background-color: #555; /* Neutral button */
       color: white;
     }
 
+    /* Floating Logo */
     .floating-logo {
       position: fixed;
       bottom: 20px;
@@ -87,6 +88,7 @@
 <body>
   <div id="jwplayerDiv"></div>
 
+  <!-- Floating Logo -->
   <img src="https://i.ibb.co/S7JpWkR/floating-logo.png" alt="Floating Logo" class="floating-logo" />
 
   <script>
@@ -96,29 +98,34 @@
       return urlParams.get(name);
     }
 
-    // Get m3u8 file URL from query string
-    const m3u8Url = getQueryParameter('m3u8') || "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+    // Retrieve the video URL from the query parameter
+    const videoUrl = getQueryParameter('videoUrl');
 
-    // Initialize JW Player with the m3u8 URL
-    jwplayer("jwplayerDiv").setup({
-      file: decodeURIComponent(m3u8Url),
-      autostart: true,
-      stretching: "uniform",
-      width: "100%",
-      height: "100%",
-      type: "hls", 
-      androidhls: true
-    });
+    if (!videoUrl) {
+      alert("No video URL provided in the query parameter. Please attach a valid M3U8 URL using ?videoUrl=example.m3u8.");
+    } else {
+      // Initialize JW Player
+      jwplayer("jwplayerDiv").setup({
+        file: decodeURIComponent(videoUrl),
+        autostart: true,
+        stretching: "uniform",
+        width: "100%",
+        height: "100%",
+        type: "hls", // Explicitly specify HLS type for M3U8 playback
+        androidhls: true // Force HLS playback on Android
+      });
 
-    // Handle playback errors
-    jwplayer("jwplayerDiv").on('error', function(event) {
-      console.error("Error playing video:", event.message);
-      alert("Failed to load the video. Please check the URL or network connection.");
-    });
+      // Handle playback errors
+      jwplayer("jwplayerDiv").on('error', function(event) {
+        console.error("Error playing video:", event.message);
+        alert("Failed to load the video. Please check the M3U8 URL or network connection.");
+      });
+    }
 
     // Close popup function
     function closePopup() {
-      document.getElementById('popup').style.display = 'none';
+      const popup = document.getElementById('popup');
+      popup.style.display = 'none';
     }
   </script>
 
@@ -132,6 +139,7 @@
   </div>
 
   <script>
+    // Show an alert for joining
     if (!localStorage.getItem('joinedTelegram')) {
       if (confirm("Join Our Telegram Channel TEAMROHITOFFICAL45_LIVE..")) {
         window.open("https://t.me/+33IHK7BHR14xY2I1", "_blank");
