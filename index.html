@@ -1,8 +1,8 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>TEAMROHITOFFICAL4_LIVE..</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>TEAMROHITOFFICAL4_LIVE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
   <style>
@@ -10,24 +10,14 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-    }
-
-    .floating-logo {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 1000; /* Ensures the logo stays on top */
-      width: 100px; /* Adjust size as needed */
-      height: auto;
+      background-color: black; /* Changed from white to black */
+      color: white; /* Ensure text is readable on a black background */
     }
 
     .jwplayer {
-      position: absolute !important;
-    }
-
-    .jwplayer.jw-flag-aspect-mode {
-      min-height: 100%;
-      max-height: 100%;
+      position: relative;
+      width: 100%;
+      height: 100vh;
     }
 
     #popup {
@@ -81,56 +71,58 @@
       background-color: #555;
       color: white;
     }
+
+    /* Floating Logo */
+    .floating-logo {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 100px;
+      height: auto;
+      z-index: 2000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 50%;
+    }
   </style>
 </head>
 <body>
   <div id="jwplayerDiv"></div>
+
+  <!-- Floating Logo -->
+  <img src="https://i.ibb.co/S7JpWkR/floating-logo.png" alt="Floating Logo" class="floating-logo" />
+
   <script>
-    // Function to get query parameter by name
+    // Function to get query parameters
     function getQueryParameter(name) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(name);
     }
 
-    // Function to decode the query parameter using substitution cipher
-    function decodeCipher(input) {
-      if (!input) return '';
-      const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-      const reverseAlphabet = alphabet.split('').reverse().join(''); // Reverse alphabet
+    // M3U8 retrieval logic
+    const m3u8File = getQueryParameter('m3u8');
 
-      return input
-        .split('')
-        .map(char => {
-          const isUpperCase = char === char.toUpperCase();
-          const lowerChar = char.toLowerCase();
+    // Default fallback M3U8 URL
+    const fallbackM3U8 = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"; // Test HLS URL
 
-          if (alphabet.includes(lowerChar)) {
-            const decodedChar = reverseAlphabet[alphabet.indexOf(lowerChar)];
-            return isUpperCase ? decodedChar.toUpperCase() : decodedChar;
-          }
+    // Decide which M3U8 URL to use
+    const m3u8Url = m3u8File ? decodeURIComponent(m3u8File) : fallbackM3U8;
 
-          return char; // Keep non-alphabet characters unchanged
-        })
-        .join('');
-    }
+    // Initialize JW Player
+    jwplayer("jwplayerDiv").setup({
+      file: m3u8Url,
+      autostart: true,
+      stretching: "uniform",
+      width: "100%",
+      height: "100%",
+      type: "hls", // Explicitly specify HLS type for M3U8 playback
+      androidhls: true // Force HLS playback on Android
+    });
 
-    // Get the encoded file name from the URL
-    const encodedFile = getQueryParameter('q');
-    const decodedFile = decodeCipher(encodedFile); // Decode the file name
-
-    // Redirect if no file is specified
-    if (!decodedFile) {
-      window.location.href = "https://t.me/+33IHK7BHR14xY2I1";
-    } else {
-      // Initialize JW Player
-      jwplayer("jwplayerDiv").setup({
-        file: decodedFile,
-        autostart: true,
-        stretching: "uniform",
-        width: "100%",
-        type: "dash",
-      });
-    }
+    // Handle playback errors
+    jwplayer("jwplayerDiv").on('error', function(event) {
+      console.error("Error playing video:", event.message);
+      alert("Failed to load the video. Please check the URL or network connection.");
+    });
 
     // Close popup function
     function closePopup() {
@@ -142,21 +134,20 @@
   <div id="popup">
     <div class="popup-content">
       <h2>Support Us!</h2>
-      <p>TEAMROHITOFFICAL45_LIVE </p>
+      <p>TEAMROHITOFFICAL45_LIVE</p>
       <button class="join-btn" onclick="window.open('https://t.me/+33IHK7BHR14xY2I1', '_blank')">Join Now</button>
       <button class="close-btn" onclick="closePopup()">Already Joined</button>
     </div>
   </div>
 
-    <img src="https://ibb.co/S7JpWkR" alt="Floating Logo" class="floating-logo"/>
-<script>
-        // Show the alert
-        if (confirm("Join Our Telegram Channel TEAMROHITOFFICAL45_LIVE..")) {
-            // Redirect to the Telegram channel if 'OK' is clicked
-            window.location.href = "https://t.me/+33IHK7BHR14xY2I1";
-        } else {
-            // Close the alert if 'Cancel' is clicked (do nothing)
-        }
-    </script>
+  <script>
+    // Show an alert for joining
+    if (!localStorage.getItem('joinedTelegram')) {
+      if (confirm("Join Our Telegram Channel TEAMROHITOFFICAL45_LIVE..")) {
+        window.open("https://t.me/+33IHK7BHR14xY2I1", "_blank");
+        localStorage.setItem('joinedTelegram', true);
+      }
+    }
+  </script>
 </body>
 </html>
