@@ -10,8 +10,17 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark {
       background-color: #003a8c; /* Mumbai Indians blue */
       color: #ffd700; /* Mumbai Indians gold */
+    }
+
+    body.light {
+      background-color: #ffffff;
+      color: #000000;
     }
 
     .jwplayer {
@@ -26,7 +35,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 58, 140, 0.9); /* Blue overlay with transparency */
+      background-color: rgba(0, 58, 140, 0.9);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -34,8 +43,8 @@
     }
 
     .popup-content {
-      background-color: #ffd700; /* Gold background */
-      color: #003a8c; /* Blue text */
+      background-color: #ffd700;
+      color: #003a8c;
       padding: 20px;
       text-align: center;
       border-radius: 10px;
@@ -45,7 +54,7 @@
 
     .popup-content h2 {
       margin: 0 0 10px;
-      color: #003a8c; /* Blue heading */
+      color: #003a8c;
     }
 
     .popup-content p {
@@ -63,16 +72,15 @@
     }
 
     .popup-content .join-btn {
-      background-color: #003a8c; /* Blue button */
-      color: #ffd700; /* Gold text */
+      background-color: #003a8c;
+      color: #ffd700;
     }
 
     .popup-content .close-btn {
-      background-color: #555; /* Neutral button */
+      background-color: #555;
       color: white;
     }
 
-    /* Floating Logo */
     .floating-logo {
       position: fixed;
       bottom: 20px;
@@ -83,6 +91,28 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       border-radius: 50%;
     }
+
+    /* Theme toggle button */
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 2000;
+      background-color: #ffd700; /* Gold */
+      color: #003a8c; /* Blue */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .theme-toggle.light {
+      background-color: #003a8c; /* Blue */
+      color: #ffd700; /* Gold */
+    }
   </style>
 </head>
 <body>
@@ -90,6 +120,9 @@
 
   <!-- Floating Logo -->
   <img src="https://i.ibb.co/S7JpWkR/floating-logo.png" alt="Floating Logo" class="floating-logo" />
+
+  <!-- Theme Toggle Button -->
+  <button id="themeToggle" class="theme-toggle">Switch to Light Theme</button>
 
   <script>
     // Function to get query parameters
@@ -111,8 +144,8 @@
         stretching: "uniform",
         width: "100%",
         height: "100%",
-        type: "hls", // Explicitly specify HLS type for M3U8 playback
-        androidhls: true // Force HLS playback on Android
+        type: "hls",
+        androidhls: true
       });
 
       // Handle playback errors
@@ -127,6 +160,28 @@
       const popup = document.getElementById('popup');
       popup.style.display = 'none';
     }
+
+    // Theme toggle logic
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+
+    // Initialize theme from localStorage
+    const currentTheme = localStorage.getItem("theme") || "dark";
+    body.classList.add(currentTheme);
+    themeToggle.textContent = currentTheme === "dark" ? "Switch to Light Theme" : "Switch to Dark Theme";
+
+    // Toggle theme
+    themeToggle.addEventListener("click", () => {
+      if (body.classList.contains("dark")) {
+        body.classList.replace("dark", "light");
+        localStorage.setItem("theme", "light");
+        themeToggle.textContent = "Switch to Dark Theme";
+      } else {
+        body.classList.replace("light", "dark");
+        localStorage.setItem("theme", "dark");
+        themeToggle.textContent = "Switch to Light Theme";
+      }
+    });
   </script>
 
   <div id="popup">
@@ -139,7 +194,6 @@
   </div>
 
   <script>
-    // Show an alert for joining
     if (!localStorage.getItem('joinedTelegram')) {
       if (confirm("Join Our Telegram Channel TEAMROHITOFFICAL45_LIVE..")) {
         window.open("https://t.me/+33IHK7BHR14xY2I1", "_blank");
