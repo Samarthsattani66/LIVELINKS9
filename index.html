@@ -18,10 +18,11 @@
       --srh-orange: #F26522;
       --lsg-skyblue: #87CEEB;
       --gt-navy: #1B1F3B;
+      --current-color: var(--mi-blue);
     }
     html {
       font-family: 'Orion Esperanto Dika', sans-serif;
-      background: var(--mi-blue);
+      background: var(--current-color);
       margin: 0;
       padding: 0;
       height: 100%;
@@ -33,20 +34,6 @@
       justify-content: flex-start;
       height: 100vh;
       color: #DAA520;
-    }
-    #telegram-banner {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: black;
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      z-index: 10000;
-      text-align: center;
-      width: 250px;
     }
     #player-container {
       position: relative;
@@ -65,113 +52,66 @@
       bottom: 10px;
       right: 10px;
       color: rgba(255, 255, 255, 0.5);
-      font-size: 18px;
+      font-size: 14px; /* Smaller size */
+      font-style: italic; /* Italic font */
       font-weight: bold;
       z-index: 10;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-      pointer-events: none; /* Prevent interaction with the watermark */
+      pointer-events: none;
     }
-    .loading {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .loading-text {
-      text-align: center;
-      font-size: 24px;
-    }
-    #telegram-banner h2 {
-      color: white;
-      margin: 0 0 10px;
-      font-family: 'Copperplate', sans-serif;
-      text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
-      animation: glow 1.5s infinite alternate;
-    }
-    @keyframes glow {
-      0% {
-        text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
-      }
-      100% {
-        text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00;
-      }
-    }
-    #telegram-banner button {
-      background-color: green;
-      color: white;
-      border: none;
-      padding: 8px 12px;
+    #theme-selector {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #222;
+      color: #fff;
+      border: 1px solid #fff;
       border-radius: 5px;
       cursor: pointer;
-      margin: 5px;
-      width: 100px;
-    }
-    #telegram-banner .cancel-button {
-      background-color: red;
-    }
-    marquee {
-      background-color: darkgoldenrod;
-      color: black;
-      width: 100%;
-      padding: 10px 0;
-      font-family: Georgia, serif;
-      font-weight: bold;
-      border-radius: 10px;
     }
   </style>
   <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
 </head>
 <body>
-  <div id="loading" class="loading">
-    <div class="loading-text">Loading TEAMROHITOFFICAL45_LIVE...</div>
-  </div>
-  <div id="telegram-banner">
-    <h2>Join TEAMROHITOFFICAL45 Telegram Channel</h2>
-    <button onclick="window.open('https://t.me/teamrohitlive77', '_blank')">Join</button>
-    <button class="cancel-button" onclick="document.getElementById('telegram-banner').style.display='none'">Cancel</button>
-  </div>
-
   <div id="player-container">
     <div id="player"></div>
     <div id="watermark">TEAMROHITOFFICAL45</div>
   </div>
 
-  <marquee behavior="scroll" direction="left">
-    "JOIN TEAMROHITOFFICAL45 LIVE LINKS TELEGRAM CHANNEL FOR ALL SPORTS LIVE LINKS"🔗❤️
-  </marquee>
+  <button id="theme-selector">Change Theme</button>
 
   <script>
-    var urlParams = new URLSearchParams(window.location.search);
-    var maxvalue = urlParams.get("videoUrl");
-
     var playerInstance = jwplayer("player").setup({
-      file: maxvalue || 'https://example.com/path/to/default/video.m3u8',
+      file: 'https://example.com/path/to/default/video.m3u8',
       width: "100%",
       height: "auto",
       primary: "html5",
-      sources: [
-        { file: maxvalue, label: "360p", type: "application/x-mpegURL" },
-        { file: maxvalue, label: "480p", type: "application/x-mpegURL" },
-        { file: maxvalue, label: "720p", type: "application/x-mpegURL" },
-        { file: maxvalue, label: "1080p", type: "application/x-mpegURL" },
-      ],
       aspectratio: "16:9",
       controls: true,
       autostart: false,
-      stretching: "uniform",
-    });
-    playerInstance.on('ready', function() {
-      document.getElementById('loading').style.display = 'none';
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('telegram-banner').style.display = 'block';
+    const themes = {
+      "Mumbai Indians": "var(--mi-blue)",
+      "Chennai Super Kings": "var(--csk-yellow)",
+      "Royal Challengers Bangalore": "var(--rcb-red)",
+      "Kolkata Knight Riders": "var(--kkr-purple)",
+      "Delhi Capitals": "var(--dc-blue)",
+      "Rajasthan Royals": "var(--rr-pink)",
+      "Sunrisers Hyderabad": "var(--srh-orange)",
+      "Lucknow Super Giants": "var(--lsg-skyblue)",
+      "Gujarat Titans": "var(--gt-navy)",
+    };
+
+    const themeSelector = document.getElementById('theme-selector');
+    const root = document.documentElement;
+
+    themeSelector.addEventListener('click', () => {
+      const themeNames = Object.keys(themes);
+      const currentTheme = root.style.getPropertyValue('--current-color');
+      const nextThemeIndex = (themeNames.findIndex(name => themes[name] === currentTheme) + 1) % themeNames.length;
+      const nextThemeName = themeNames[nextThemeIndex];
+      root.style.setProperty('--current-color', themes[nextThemeName]);
+      alert(`Theme changed to ${nextThemeName}`);
     });
   </script>
 </body>
