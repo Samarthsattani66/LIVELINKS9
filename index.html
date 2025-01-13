@@ -1,116 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>TEAMROHITOFFICAL45_LIVE</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="//content.jwplatform.com/libraries/SAHhwvZq.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    /* Default Dark Theme */
-    body.dark {
-      background-color: #003a8c;
-      color: #ffd700;
-    }
-    body.light {
-      background-color: #ffffff;
-      color: #000000;
-    }
-    /* Watermark */
-    .watermark {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      font-size: 20px;
-      font-weight: bold;
-      color: rgba(255, 255, 255, 0.7);
-      pointer-events: none;
-      z-index: 1000;
-    }
-    /* Theme toggle button */
-    .theme-toggle {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      padding: 10px 15px;
-      font-size: 14px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      z-index: 2000;
-      background-color: #ffd700;
-      color: #003a8c;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TEAMROHITOFFICAL45_LIVE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orion+Esperanto+Dika&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Copperplate&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --mi-blue: #045093;
+      --csk-yellow: #FFD700;
+      --rcb-red: #A50C1B;
+      --kkr-purple: #3F2A56;
+      --dc-blue: #004BA0;
+      --rr-pink: #EA1C69;
+      --srh-orange: #F26522;
+      --lsg-skyblue: #87CEEB;
+      --gt-navy: #1B1F3B;
+    }
+    html {
+      font-family: 'Orion Esperanto Dika', sans-serif;
+      background: var(--mi-blue);
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      color: #DAA520;
+    }
+    #telegram-banner {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: black;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      text-align: center;
+      width: 250px;
+    }
+    #player-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 80px;
+    }
+    #player {
+      width: 100%;
+      border: 5px solid #FFFF00;
+      border-radius: 10px;
+      box-shadow: 0 0 20px 5px rgba(255, 255, 0, 0.7);
+    }
+    #watermark {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 10;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      pointer-events: none; /* Prevent interaction with the watermark */
+    }
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loading-text {
+      text-align: center;
+      font-size: 24px;
+    }
+    #telegram-banner h2 {
+      color: white;
+      margin: 0 0 10px;
+      font-family: 'Copperplate', sans-serif;
+      text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
+      animation: glow 1.5s infinite alternate;
+    }
+    @keyframes glow {
+      0% {
+        text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
+      }
+      100% {
+        text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00;
+      }
+    }
+    #telegram-banner button {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+      width: 100px;
+    }
+    #telegram-banner .cancel-button {
+      background-color: red;
+    }
+    marquee {
+      background-color: darkgoldenrod;
+      color: black;
+      width: 100%;
+      padding: 10px 0;
+      font-family: Georgia, serif;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+  </style>
+  <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
 </head>
 <body>
-  <div id="jwplayerDiv"></div>
-  <div class="watermark">teamrohitoffical45</div>
-  <button id="themeToggle" class="theme-toggle">Change Theme</button>
-  <script>
-    // Get video URL from query parameter
-    function getQueryParameter(name) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
-    }
+  <div id="loading" class="loading">
+    <div class="loading-text">Loading TEAMROHITOFFICAL45_LIVE...</div>
+  </div>
+  <div id="telegram-banner">
+    <h2>Join TEAMROHITOFFICAL45 Telegram Channel</h2>
+    <button onclick="window.open('https://t.me/teamrohitlive77', '_blank')">Join</button>
+    <button class="cancel-button" onclick="document.getElementById('telegram-banner').style.display='none'">Cancel</button>
+  </div>
 
-    const videoUrl = getQueryParameter('url');
-    if (!videoUrl) {
-      document.getElementById("jwplayerDiv").innerHTML = `
-        <div style="color: red; text-align: center; margin-top: 20px;">
-          Error: No video URL provided. Use <strong>?url=example.m3u8</strong> in the URL.
-        </div>`;
-    } else {
-      jwplayer("jwplayerDiv").setup({
-        file: decodeURIComponent(videoUrl),
-        autostart: true,
-        stretching: "uniform",
-        width: "100%",
-        height: "100%",
-        type: "hls",
-        androidhls: true
-      }).on('error', function(event) {
-        console.error("Error playing video:", event.message);
-        alert("Video playback failed.");
-      });
-    }
+  <div id="player-container">
+    <div id="player"></div>
+    <div id="watermark">TEAMROHITOFFICAL45</div>
+  </div>
 
-    // IPL Theme Toggle
-    const themeToggle = document.getElementById("themeToggle");
-    const themes = ["dark", "light", "csk", "rcb", "kkr"];
-    let currentThemeIndex = 0;
+  <marquee behavior="scroll" direction="left">
+    "JOIN TEAMROHITOFFICAL45 LIVE LINKS TELEGRAM CHANNEL FOR ALL SPORTS LIVE LINKS"🔗❤️
+  </marquee>
 
-    themeToggle.addEventListener("click", () => {
-      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-      document.body.className = themes[currentThemeIndex];
-      themeToggle.textContent = `Theme: ${themes[currentThemeIndex].toUpperCase()}`;
-    });
+  <script>
+    var urlParams = new URLSearchParams(window.location.search);
+    var maxvalue = urlParams.get("videoUrl");
 
-    // Popup Logic
-    const popup = document.getElementById("popup");
-    if (localStorage.getItem("popupClosed") === "true") {
-      popup.style.display = "none";
-    }
+    var playerInstance = jwplayer("player").setup({
+      file: maxvalue || 'https://example.com/path/to/default/video.m3u8',
+      width: "100%",
+      height: "auto",
+      primary: "html5",
+      sources: [
+        { file: maxvalue, label: "360p", type: "application/x-mpegURL" },
+        { file: maxvalue, label: "480p", type: "application/x-mpegURL" },
+        { file: maxvalue, label: "720p", type: "application/x-mpegURL" },
+        { file: maxvalue, label: "1080p", type: "application/x-mpegURL" },
+      ],
+      aspectratio: "16:9",
+      controls: true,
+      autostart: false,
+      stretching: "uniform",
+    });
+    playerInstance.on('ready', function() {
+      document.getElementById('loading').style.display = 'none';
+    });
 
-    document.querySelector(".close-btn").addEventListener("click", () => {
-      popup.style.display = "none";
-      localStorage.setItem("popupClosed", "true");
-    });
-  </script>
-  <div id="popup">
-    <div class="popup-content">
-      <h2>Support Us!</h2>
-      <p>TEAMROHITOFFICAL45_LIVE</p>
-      <button class="join-btn" onclick="window.open('https://t.me/+33IHK7BHR14xY2I1', '_blank')">Join Now</button>
-      <button class="close-btn">Close</button>
-    </div>
-  </div>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('telegram-banner').style.display = 'block';
+    });
+  </script>
 </body>
 </html>
