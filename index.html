@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -7,6 +8,7 @@
   <title>TEAMROHITOFFICAL45_LIVE</title>
   <link href="https://fonts.googleapis.com/css2?family=Orion+Esperanto+Dika&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Copperplate&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --mi-blue: #045093;
@@ -18,8 +20,10 @@
       --srh-orange: #F26522;
       --lsg-skyblue: #87CEEB;
       --gt-navy: #1B1F3B;
+      --pk-red: #D71920; /* Punjab Kings Theme */
       --current-color: var(--mi-blue);
     }
+
     html {
       font-family: 'Orion Esperanto Dika', sans-serif;
       background: var(--current-color);
@@ -27,6 +31,7 @@
       padding: 0;
       height: 100%;
     }
+
     body {
       display: flex;
       flex-direction: column;
@@ -35,30 +40,34 @@
       height: 100vh;
       color: #DAA520;
     }
+
     #player-container {
       position: relative;
       width: 100%;
       max-width: 800px;
       margin-top: 80px;
     }
+
     #player {
       width: 100%;
       border: 5px solid #FFFF00;
       border-radius: 10px;
       box-shadow: 0 0 20px 5px rgba(255, 255, 0, 0.7);
     }
+
     #watermark {
       position: absolute;
       bottom: 10px;
       right: 10px;
       color: rgba(255, 255, 255, 0.5);
-      font-size: 14px; /* Smaller size */
-      font-style: italic; /* Italic font */
+      font-size: 14px;
+      font-style: italic;
       font-weight: bold;
       z-index: 10;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
       pointer-events: none;
     }
+
     #theme-selector {
       margin-top: 20px;
       padding: 10px 20px;
@@ -69,8 +78,10 @@
       cursor: pointer;
     }
   </style>
+
   <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
 </head>
+
 <body>
   <div id="player-container">
     <div id="player"></div>
@@ -80,8 +91,18 @@
   <button id="theme-selector">Change Theme</button>
 
   <script>
+    // Function to extract videoUrl from query params
+    function getVideoUrlFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('videoUrl');
+    }
+
+    // Get video URL or fallback to default video
+    const videoUrl = getVideoUrlFromQuery() || 'https://example.com/path/to/default/video.m3u8';
+
+    // Initialize JWPlayer
     var playerInstance = jwplayer("player").setup({
-      file: 'https://example.com/path/to/default/video.m3u8',
+      file: videoUrl,
       width: "100%",
       height: "auto",
       primary: "html5",
@@ -90,6 +111,7 @@
       autostart: false,
     });
 
+    // Theme switcher including Punjab Kings
     const themes = {
       "Mumbai Indians": "var(--mi-blue)",
       "Chennai Super Kings": "var(--csk-yellow)",
@@ -100,19 +122,22 @@
       "Sunrisers Hyderabad": "var(--srh-orange)",
       "Lucknow Super Giants": "var(--lsg-skyblue)",
       "Gujarat Titans": "var(--gt-navy)",
+      "Punjab Kings": "var(--pk-red)" // Added Punjab Kings
     };
 
     const themeSelector = document.getElementById('theme-selector');
     const root = document.documentElement;
 
+    let themeIndex = 0; // Track current theme
+
     themeSelector.addEventListener('click', () => {
       const themeNames = Object.keys(themes);
-      const currentTheme = root.style.getPropertyValue('--current-color');
-      const nextThemeIndex = (themeNames.findIndex(name => themes[name] === currentTheme) + 1) % themeNames.length;
-      const nextThemeName = themeNames[nextThemeIndex];
+      themeIndex = (themeIndex + 1) % themeNames.length;
+      const nextThemeName = themeNames[themeIndex];
       root.style.setProperty('--current-color', themes[nextThemeName]);
       alert(`Theme changed to ${nextThemeName}`);
     });
   </script>
 </body>
+
 </html>
