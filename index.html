@@ -20,7 +20,7 @@
       --srh-orange: #F26522;
       --lsg-skyblue: #87CEEB;
       --gt-navy: #1B1F3B;
-      --pk-red: #D71920; /* Punjab Kings Theme */
+      --pk-red: #D71920;
       --current-color: var(--mi-blue);
     }
 
@@ -68,7 +68,7 @@
       pointer-events: none;
     }
 
-    #theme-selector {
+    #theme-selector, #telegram-btn {
       margin-top: 20px;
       padding: 10px 20px;
       background-color: #222;
@@ -76,6 +76,14 @@
       border: 1px solid #fff;
       border-radius: 5px;
       cursor: pointer;
+      text-decoration: none;
+      font-size: 16px;
+      display: inline-block;
+      transition: background 0.3s ease;
+    }
+
+    #theme-selector:hover, #telegram-btn:hover {
+      background-color: #444;
     }
   </style>
 
@@ -89,6 +97,9 @@
   </div>
 
   <button id="theme-selector">Change Theme</button>
+
+  <!-- Telegram Button -->
+  <a href="https://t.me/+lkbpBqFd0FljNzJl" target="_blank" id="telegram-btn">Join My Telegram</a>
 
   <script>
     // Function to extract videoUrl from query params
